@@ -1,5 +1,8 @@
 apply plugin: 'com.android.application'
 apply plugin: 'android-apt'
+apply plugin: 'com.neenbedankt.android-apt'
+
+def dbflow_version = "3.1.1"
 def AAVersion = '4.1.0'
 
 
@@ -45,19 +48,23 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha6'
     testCompile 'junit:junit:4.12'
 
+//    Retrofit and Picasso
     compile 'com.google.code.gson:gson:2.6.2'
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
     compile 'com.squareup.picasso:picasso:2.3.3'
 
-    repositories {
-        mavenCentral()
-        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
-    }
-    compile 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
-
+// Android Annotations
     apt "org.androidannotations:androidannotations:$AAVersion"
     compile "org.androidannotations:androidannotations-api:$AAVersion"
+
+// DBFlow
+    apt "com.github.Raizlabs.DBFlow:dbflow-processor:${dbflow_version}"
+    compile "com.github.Raizlabs.DBFlow:dbflow-core:${dbflow_version}"
+    compile "com.github.Raizlabs.DBFlow:dbflow:${dbflow_version}"
+    compile 'net.zetetic:android-database-sqlcipher:3.5.1'
+    // sql-cipher database encryption (optional)
+    compile "com.github.Raizlabs.DBFlow:dbflow-sqlcipher:${dbflow_version}@aar"
 
 
 }
