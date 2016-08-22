@@ -4,7 +4,7 @@ package com.vladnamik.developer.movieinformationviewer.main;
 import android.util.Log;
 
 import com.vladnamik.developer.movieinformationviewer.components.Application;
-import com.vladnamik.developer.movieinformationviewer.database.DBService;
+import com.vladnamik.developer.movieinformationviewer.database.DBHelper;
 import com.vladnamik.developer.movieinformationviewer.database.entities.Movie;
 import com.vladnamik.developer.movieinformationviewer.database.entities.SearchPage;
 
@@ -21,10 +21,10 @@ public class DataLoader {
 
     public SearchPage loadPage(final String search, final int pageNumber) throws IOException {
         Log.d(DATA_LOADER_LOG_TAG, "start loading page from DB");
-        DBService dbService = new DBService();
-        SearchPage searchPage = dbService.getSearchPage(search, pageNumber);
+        DBHelper dbHelper = new DBHelper();
+        SearchPage searchPage = dbHelper.getSearchPage(search, pageNumber);
         if (searchPage != null) {
-            searchPage.setMovies(dbService.getMoviesFromPageAndUpdate(searchPage));
+            searchPage.setMovies(dbHelper.getMoviesFromPageAndUpdate(searchPage));
             Log.d(DATA_LOADER_LOG_TAG, "page uploaded successfully");
             return searchPage;
         } else {
@@ -35,11 +35,11 @@ public class DataLoader {
         }
     }
 
-    public Movie loadMovieByImdbId(String imdbId) throws IOException {
+    public Movie loadFullMovieByImdbId(String imdbId) throws IOException {
         Log.d(DATA_LOADER_LOG_TAG, "start loading movie by imdb id from DB");
-        DBService dbService = new DBService();
-        Movie movie = dbService.getMovieByImdbId(imdbId);
-        if (movie != null) {
+        DBHelper dbHelper = new DBHelper();
+        Movie movie = dbHelper.getMovieByImdbId(imdbId);
+        if (movie != null && movie.isFull()) {
             Log.d(DATA_LOADER_LOG_TAG, "movie uploaded successfully");
             return movie;
         } else {
@@ -51,11 +51,11 @@ public class DataLoader {
         }
     }
 
-    public Movie loadMovieByTitle(String title) throws IOException {
+    public Movie loadFullMovieByTitle(String title) throws IOException {
         Log.d(DATA_LOADER_LOG_TAG, "start loading movie by imdb id from DB");
-        DBService dbService = new DBService();
-        Movie movie = dbService.getMovieByTitle(title);
-        if (movie != null) {
+        DBHelper dbHelper = new DBHelper();
+        Movie movie = dbHelper.getMovieByTitle(title);
+        if (movie != null && movie.isFull()) {
             Log.d(DATA_LOADER_LOG_TAG, "movie uploaded successfully");
             return movie;
         } else {

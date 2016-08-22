@@ -13,7 +13,7 @@ import com.vladnamik.developer.movieinformationviewer.R;
 import com.vladnamik.developer.movieinformationviewer.components.Application;
 import com.vladnamik.developer.movieinformationviewer.database.entities.Movie;
 import com.vladnamik.developer.movieinformationviewer.database.entities.SearchPage;
-import com.vladnamik.developer.movieinformationviewer.main.DataLoader;
+import com.vladnamik.developer.movieinformationviewer.main.DataLoaderUsedService;
 
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EFragment;
@@ -44,6 +44,7 @@ public class MovieListFragment extends ListFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
         onMovieSelected = (OnMovieSelected) getActivity();
 
         query = ((GetQueryParams) getActivity()).getQuery();
@@ -97,8 +98,8 @@ public class MovieListFragment extends ListFragment {
     void tryToAddNewDataInList() {
         Log.d(MOVIE_LIST_FRAGMENT_LOG_TAG, "start trying to add new data in list");
         try {
-            SearchPage searchPage = new DataLoader((Application) getActivity().getApplication())
-                    .loadPage(query, nextPageToUploadNumber);
+            SearchPage searchPage = new DataLoaderUsedService((Application) getActivity().getApplication())
+                    .loadPage(getActivity(), query, nextPageToUploadNumber);
             if (searchPage != null) {
                 Log.d(MOVIE_LIST_FRAGMENT_LOG_TAG, "start process response");
                 allMoviesOnQueryNumber = searchPage.getTotalResults();
@@ -149,4 +150,5 @@ public class MovieListFragment extends ListFragment {
     public interface OnMovieSelected {
         void onMovieSelected(String movieImdbId);
     }
+
 }

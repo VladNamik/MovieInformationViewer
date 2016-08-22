@@ -1,6 +1,6 @@
 package com.vladnamik.developer.movieinformationviewer.api;
 
-import com.vladnamik.developer.movieinformationviewer.database.DBService;
+import com.vladnamik.developer.movieinformationviewer.database.DBHelper;
 import com.vladnamik.developer.movieinformationviewer.database.entities.Movie;
 import com.vladnamik.developer.movieinformationviewer.database.entities.SearchPage;
 
@@ -14,35 +14,13 @@ public class APIHelper {
         this.api = api;
     }
 
-//
-//    public List<Movie> getMoviesFromAllPages(String search) throws IOException {
-//        SearchPage searchPage = api.search(search, 1).execute().body();
-//        List<Movie> allMovies = new ArrayList<>(searchPage.getTotalResults());
-//        int pageNumber = 2;
-//        while (searchPage.getMovies() != null) {
-//            allMovies.addAll(searchPage.getMovies());
-//            searchPage = api.search(search, pageNumber).execute().body();
-//            pageNumber++;
-//        }
-//        return allMovies;
-//    }
-//
-//    public List<Movie> getMoviesFullInfoFromPage(SearchPage page) throws IOException {
-//        List<Movie> movies = page.getMovies();
-//        List<Movie> fullInfoMovies = new ArrayList<>();
-//        for (Movie movie : movies) {
-//            fullInfoMovies.add(api.getMovieByImdbId(movie.getImdbID()).execute().body());
-//        }
-//        return fullInfoMovies;
-//    }
-
     public SearchPage getPage(final String search, final int pageNumber) throws IOException {
         SearchPage searchPage = api.search(search, pageNumber).execute().body();
         if (searchPage.getTotalResults() == null) {
             return null;
         }
 
-        searchPage = new DBService().savePage(search, searchPage, pageNumber);
+        searchPage = new DBHelper().savePage(search, searchPage, pageNumber);
 
         return searchPage;
     }
@@ -54,7 +32,7 @@ public class APIHelper {
             return null;
         }
 
-        movie = new DBService().saveMovie(movie);
+        movie = new DBHelper().saveMovie(movie);
 
         return movie;
     }
@@ -66,7 +44,7 @@ public class APIHelper {
             return null;
         }
 
-        movie = new DBService().saveMovie(movie);
+        movie = new DBHelper().saveMovie(movie);
 
         return movie;
     }

@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.vladnamik.developer.movieinformationviewer.R;
 import com.vladnamik.developer.movieinformationviewer.components.Application;
 import com.vladnamik.developer.movieinformationviewer.database.entities.Movie;
-import com.vladnamik.developer.movieinformationviewer.main.DataLoader;
+import com.vladnamik.developer.movieinformationviewer.main.DataLoaderUsedService;
 
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EFragment;
@@ -65,13 +65,9 @@ public class FullMovieInfoFragment extends Fragment {
     void getMovieAndFill() {
         try {
             Log.d(FULL_MOVIE_INFO_FRAGMENT_LOG_TAG, "trying to upload movie");
-            movie = new DataLoader((Application) getActivity().getApplication())
-                    .loadMovieByImdbId(movieImdbId);
-            if (!movie.isFull()) {
-                movie = ((Application) getActivity().getApplication()).getApiHelper()
-                        .getMovieByImdbId(movieImdbId);
-            }
-            Log.d(FULL_MOVIE_INFO_FRAGMENT_LOG_TAG, "movie was uploaded successful");
+            movie = new DataLoaderUsedService((Application) getActivity().getApplication())
+                    .loadFullMovieByImdbId(getActivity(), movieImdbId);
+            Log.d(FULL_MOVIE_INFO_FRAGMENT_LOG_TAG, "movie was uploaded successfully");
             fillMovieFields();
         } catch (IOException e) {
             Log.d(FULL_MOVIE_INFO_FRAGMENT_LOG_TAG, "problems with movie uploading");

@@ -18,8 +18,8 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
-public class DBService {
-    private static final String DB_SERVICE_LOG_TAG = "DBService";
+public class DBHelper {
+    private static final String DB_SERVICE_LOG_TAG = "DBHelper";
 
     public String getAllDBInfo(boolean deleteAll) {
 
@@ -116,7 +116,6 @@ public class DBService {
             searchPage.setPageNumber(pageNumber);
             searchPage.save();
 
-            Log.d(DB_SERVICE_LOG_TAG, "search page id = " + searchPage.getId());
             if (searchPage.getMovies() != null) {
                 for (Movie movie : searchPage.getMovies()) {
                     new SearchPageMovie(searchPage, saveMovie(movie)).save();
@@ -160,10 +159,11 @@ public class DBService {
             MoviePoster moviePoster = new MoviePoster();
             try {
                 moviePoster.downloadPoster(movie.getPoster());
-                moviePoster.save();
             } catch (IOException e) {
                 Log.w(DB_SERVICE_LOG_TAG, "Can't download poster from " + movie.getPoster());
                 e.printStackTrace();
+            } finally {
+                moviePoster.save();
             }
             movie.setBlobPoster(moviePoster);
         }
