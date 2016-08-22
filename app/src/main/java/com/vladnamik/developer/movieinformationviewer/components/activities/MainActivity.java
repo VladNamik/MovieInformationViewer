@@ -1,63 +1,44 @@
 package com.vladnamik.developer.movieinformationviewer.components.activities;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.widget.TextView;
+import android.support.v7.widget.SearchView;
 
 import com.vladnamik.developer.movieinformationviewer.R;
-import com.vladnamik.developer.movieinformationviewer.api.APIHelper;
 import com.vladnamik.developer.movieinformationviewer.components.Application;
-import com.vladnamik.developer.movieinformationviewer.database.DBService;
-import com.vladnamik.developer.movieinformationviewer.database.entities.SearchPage;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.App;
-import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
 
-
-@EActivity(R.layout.activity_main)
+@EActivity(R.layout.activity_search_movie)
 public class MainActivity extends AppCompatActivity {
     private static final String MAIN_ACTIVITY_LOG_TAG = "MainActivity";
+    public static final String EXTRA_SEARCH_QUERY = "query";
+
     @App
     Application app;
 
-    @ViewById(R.id.main_activity_sample_text_view)
-    TextView sampleTextView;
+    @ViewById(R.id.search_movie_activity_search_view)
+    SearchView searchView;
 
     @AfterViews
-    void testAPIChanges() {
-        saveToDB();
-    }
-
-    void saveToDB() {
-        app.getApiHelper().getPageAsync("Superman", 1, new APIHelper.Callback<SearchPage>() {
+    void afterViews() {
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public void onResponse(SearchPage data) {
-                Log.d(MAIN_ACTIVITY_LOG_TAG, "start getting all data from DB");
-                getAllFromDB();
+            public boolean onQueryTextSubmit(String query) {
+                Intent intent = new Intent(MainActivity.this, MovieListActivity_.class);
+                intent.putExtra(EXTRA_SEARCH_QUERY, query);
+                startActivity(intent);
+                return true;
             }
 
             @Override
-            public void onFailure(Throwable t) {
-                sampleTextView.setText(t.getLocalizedMessage());
+            public boolean onQueryTextChange(String newText) {
+                return false;
             }
         });
-    }
-
-    @Background
-    void getAllFromDB() {
-
-        String allDBInfo = new DBService().getAllDBInfo(false);
-        showText(allDBInfo);
-    }
-
-    @UiThread
-    void showText(String text) {
-        sampleTextView.setText(text);
-        Log.d(MAIN_ACTIVITY_LOG_TAG, text);
     }
 }

@@ -8,4 +8,17 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="movie_params">
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">#9DB1CC</item>
+        <item name="android:paddingTop">2dp</item>
+        <item name="android:paddingBottom">2dp</item>
+    </style>
+
+    <style name="movie_params_value">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">#1A4780</item>
+        <item name="android:paddingBottom">8dp</item>
+    </style>
+
 </resources>

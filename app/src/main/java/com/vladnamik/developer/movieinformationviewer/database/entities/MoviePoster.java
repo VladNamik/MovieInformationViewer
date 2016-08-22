@@ -1,10 +1,14 @@
 package com.vladnamik.developer.movieinformationviewer.database.entities;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.data.Blob;
 import com.raizlabs.android.dbflow.structure.BaseModel;
+import com.squareup.picasso.Picasso;
 import com.vladnamik.developer.movieinformationviewer.database.MovieInfoDB;
 
 import java.io.ByteArrayOutputStream;
@@ -40,10 +44,10 @@ public class MoviePoster extends BaseModel {
     }
 
     public void downloadPoster(String url) throws IOException {
-        if (url == null || url.equals("") || url.equals("N/A")) {
+        if (moviePoster != null) {
             return;
         }
-        if (moviePoster != null) {
+        if (url == null || url.equals("") || url.equals("N/A")) {
             return;
         }
 
@@ -51,7 +55,7 @@ public class MoviePoster extends BaseModel {
         InputStream is = null;
         try {
             is = new URL(url).openStream();
-            byte[] byteChunk = new byte[4096]; // Or whatever size you want to read in at a time.
+            byte[] byteChunk = new byte[4096];
             int n;
 
             while ((n = is.read(byteChunk)) > 0) {
@@ -63,5 +67,20 @@ public class MoviePoster extends BaseModel {
                 is.close();
             }
         }
+    }
+
+    public void downloadPoster(Context context, String url) throws IOException {
+        if (url == null || url.equals("") || url.equals("N/A")) {
+            return;
+        }
+        if (moviePoster != null) {
+            return;
+        }
+
+        Bitmap bitmap = Picasso.with(context).load(url).get();
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        byte[] byteArray = stream.toByteArray();
+        moviePoster = new Blob(stream.toByteArray());
     }
 }

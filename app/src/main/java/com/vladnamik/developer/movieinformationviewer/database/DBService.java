@@ -15,7 +15,6 @@ import com.vladnamik.developer.movieinformationviewer.database.entities.SearchQu
 import com.vladnamik.developer.movieinformationviewer.database.entities.SearchQuery_Table;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -104,25 +103,12 @@ public class DBService {
 
         SearchQuery searchQuery = saveSearchQuery(search, searchPage.getTotalResults());
 
-        SearchPage searchPageFromDB = SQLite.select().from(SearchPage.class)
-                .where(SearchPage_Table.pageNumber.eq(pageNumber))
-                .and(SearchPage_Table.searchQuery__id.eq(searchQuery.getId()))
-                .querySingle();
+        SearchPage searchPageFromDB = getSearchPage(searchQuery, pageNumber);
 
 
         if (searchPageFromDB != null) {
+            searchPageFromDB.setMovies(getMoviesFromPageAndUpdate(searchPageFromDB));
 
-            IProperty[] properties = Movie_Table.getAllColumnProperties();
-            for (int i = 0; i < properties.length; i++) {
-                properties[i] = properties[i].withTable();
-            }
-
-            List<Movie> moviesFromDB = SQLite.select(properties).from(Movie.class)
-                    .innerJoin(SearchPageMovie.class).on(Movie_Table._id.withTable().eq(SearchPageMovie_Table.movie__id))
-                    .innerJoin(SearchPage.class).on(SearchPageMovie_Table.searchPage__id.eq(SearchPage_Table._id.withTable()))
-                    .where(SearchPage_Table._id.withTable().eq(searchPageFromDB.getId())).queryList();
-
-            updateMoviesLastSearchDate(moviesFromDB);
             return searchPageFromDB;
         } else {
 
@@ -130,8 +116,8 @@ public class DBService {
             searchPage.setPageNumber(pageNumber);
             searchPage.save();
 
+            Log.d(DB_SERVICE_LOG_TAG, "search page id = " + searchPage.getId());
             if (searchPage.getMovies() != null) {
-                List<SearchPageMovie> searchPageMovies = new ArrayList<>(searchPage.getMovies().size());
                 for (Movie movie : searchPage.getMovies()) {
                     new SearchPageMovie(searchPage, saveMovie(movie)).save();
                 }
@@ -155,7 +141,7 @@ public class DBService {
             if (movieFromDB != null) {
                 movie._id = movieFromDB._id;
             }
-            movie = saveMoviePoster(movie);
+            movie = getAndSaveMoviePoster(movie);
             movie.save();
             return movie;
         } else {
@@ -166,8 +152,11 @@ public class DBService {
         }
     }
 
-    public Movie saveMoviePoster(Movie movie) {
-        if (movie != null && movie.isFull() && movie.getBlobPoster() == null) {
+    public Movie getAndSaveMoviePoster(Movie movie) {
+        if (movie == null) {
+            return null;
+        }
+        if (movie.isFull() && movie.getBlobPoster() == null) {
             MoviePoster moviePoster = new MoviePoster();
             try {
                 moviePoster.downloadPoster(movie.getPoster());
@@ -182,15 +171,90 @@ public class DBService {
         return movie;
     }
 
-
     public void updateMoviesLastSearchDate(List<Movie> movies) {
         if (movies != null) {
             for (Movie movie : movies) {
-                Log.d(DB_SERVICE_LOG_TAG, movie.toString());
+                Log.d(DB_SERVICE_LOG_TAG, "updating " + movie.toString());
                 movie.setLastSearchDate(new Date());
                 movie.save();
             }
         }
     }
 
+    public SearchPage getSearchPage(SearchQuery searchQuery, int pageNumber) {
+        if (searchQuery == null) {
+            return null;
+        }
+
+        SearchPage searchPage = SQLite.select().from(SearchPage.class)
+                .where(SearchPage_Table.pageNumber.eq(pageNumber))
+                .and(SearchPage_Table.searchQuery__id.eq(searchQuery.getId()))
+                .querySingle();
+        if (searchPage == null) {
+            return null;
+        }
+        searchPage.setTotalResults(searchQuery.getMoviesCount());
+        return searchPage;
+    }
+
+    public SearchPage getSearchPage(String search, int pageNumber) {
+        SearchQuery searchQuery = SQLite.select().from(SearchQuery.class)
+                .where(SearchQuery_Table.query.eq(search)).querySingle();
+        if (searchQuery == null) {
+            return null;
+        }
+
+        SearchPage searchPage = SQLite.select().from(SearchPage.class)
+                .where(SearchPage_Table.pageNumber.eq(pageNumber))
+                .and(SearchPage_Table.searchQuery__id.eq(searchQuery.getId()))
+                .querySingle();
+        if (searchPage == null) {
+            return null;
+        }
+        searchPage.setTotalResults(searchQuery.getMoviesCount());
+        return searchPage;
+    }
+
+    public List<Movie> getMoviesFromPageAndUpdate(SearchPage searchPage) {
+        if (searchPage.getMovies() != null) {
+            return searchPage.getMovies();
+        }
+
+        IProperty[] properties = Movie_Table.getAllColumnProperties();
+        for (int i = 0; i < properties.length; i++) {
+            properties[i] = properties[i].withTable();
+        }
+
+        List<Movie> moviesFromDB = SQLite.select(properties).from(Movie.class)
+                .innerJoin(SearchPageMovie.class).on(Movie_Table._id.withTable().eq(SearchPageMovie_Table.movie__id))
+                .innerJoin(SearchPage.class).on(SearchPageMovie_Table.searchPage__id.eq(SearchPage_Table._id.withTable()))
+                .where(SearchPage_Table._id.withTable().eq(searchPage.getId())).queryList();
+
+        updateMoviesLastSearchDate(moviesFromDB);
+        return moviesFromDB;
+    }
+
+    public Movie getMovieByImdbId(String imdbId) {
+        Movie movie = SQLite.select().from(Movie.class)
+                .where(Movie_Table.imdbID.eq(imdbId)).querySingle();
+        if (movie == null) {
+            return null;
+        } else {
+            movie.setLastSearchDate(new Date());
+            movie.save();
+            return movie;
+        }
+    }
+
+    public Movie getMovieByTitle(String title) {
+        Movie movie = SQLite.select().from(Movie.class)
+                .where(Movie_Table.Title.eq(title)).querySingle();
+        if (movie == null) {
+            return null;
+        } else {
+            movie.setLastSearchDate(new Date());
+            movie.save();
+            return movie;
+        }
+    }
 }

@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">MovieInformationViewer</string>
+    <string name="year">year</string>
+    <string name="film_description">Film description</string>
+    <string name="genres">Genres</string>
+    <string name="country">County</string>
+    <string name="imdb_rating">IMDB Rating</string>
+    <string name="rated">Rated</string>
+    <string name="release_date">Release Date</string>
+    <string name="search">Search</string>
+    <string name="search_results_for">"Search results for "</string>
+    <string name="search_results_number">"Number of results is "</string>
 </resources>

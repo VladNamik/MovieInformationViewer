@@ -1,8 +1,5 @@
 package com.vladnamik.developer.movieinformationviewer.api;
 
-import android.os.AsyncTask;
-import android.util.Pair;
-
 import com.vladnamik.developer.movieinformationviewer.database.DBService;
 import com.vladnamik.developer.movieinformationviewer.database.entities.Movie;
 import com.vladnamik.developer.movieinformationviewer.database.entities.SearchPage;
@@ -39,131 +36,40 @@ public class APIHelper {
 //        return fullInfoMovies;
 //    }
 
-    public void getPageAsync(final String search, final int pageNumber, final Callback<SearchPage> callback) {
-        new PageAsync(search, pageNumber, callback).execute();
+    public SearchPage getPage(final String search, final int pageNumber) throws IOException {
+        SearchPage searchPage = api.search(search, pageNumber).execute().body();
+        if (searchPage.getTotalResults() == null) {
+            return null;
+        }
+
+        searchPage = new DBService().savePage(search, searchPage, pageNumber);
+
+        return searchPage;
     }
 
-    private class PageAsync extends AsyncTask<Void, Void, Pair<SearchPage, Throwable>> {
-        private final String search;
-        private final int pageNumber;
-        private final Callback<SearchPage> callback;
-
-        public PageAsync(String search, int pageNumber, Callback<SearchPage> callback) {
-            this.callback = callback;
-            this.search = search;
-            this.pageNumber = pageNumber;
+    public Movie getMovieByImdbId(String id) throws IOException {
+        Movie movie = api.getMovieByImdbId(id).execute().body();
+        movie.setFull(true);
+        if (movie.getImdbID() == null) {
+            return null;
         }
 
-        @Override
-        protected Pair<SearchPage, Throwable> doInBackground(Void... voids) {
-            try {
-                SearchPage searchPage = api.search(search, pageNumber).execute().body();
-                if (searchPage.getTotalResults() == null) {
-                    return new Pair<>(null, null);
-                }
+        movie = new DBService().saveMovie(movie);
 
-                searchPage = new DBService().savePage(search, searchPage, pageNumber);
-
-                return new Pair<>(searchPage, null);
-            } catch (IOException e) {
-                return new Pair<>(null, (Throwable) e);
-            }
-        }
-
-        @Override
-        protected void onPostExecute(Pair<SearchPage, Throwable> searchPageThrowablePair) {
-            if (searchPageThrowablePair.second != null) {
-                callback.onFailure(searchPageThrowablePair.second);
-            } else {
-                callback.onResponse(searchPageThrowablePair.first);
-            }
-        }
+        return movie;
     }
 
-    public void getMovieByImdbIdAsync(String id, final Callback<Movie> callback) {
-        new MovieByImdbIdAsync(id, callback).execute();
+    public Movie getMovieByTitle(String title) throws IOException {
+        Movie movie = api.getMovieByTitle(title).execute().body();
+        movie.setFull(true);
+        if (movie.getImdbID() == null) {
+            return null;
+        }
+
+        movie = new DBService().saveMovie(movie);
+
+        return movie;
     }
 
-    private class MovieByImdbIdAsync extends AsyncTask<Void, Void, Pair<Movie, Throwable>> {
-        private String id;
-        private Callback<Movie> callback;
-
-        public MovieByImdbIdAsync(String id, Callback<Movie> callback) {
-            this.id = id;
-            this.callback = callback;
-        }
-
-        @Override
-        protected Pair<Movie, Throwable> doInBackground(Void... voids) {
-            try {
-                Movie movie = api.getMovieByImdbId(id).execute().body();
-                movie.setFull(true);
-                if (movie.getImdbID() == null) {
-                    return new Pair<>(null, null);
-                }
-
-                movie = new DBService().saveMovie(movie);
-
-                return new Pair<>(movie, null);
-            } catch (IOException e) {
-                return new Pair<>(null, (Throwable) e);
-            }
-        }
-
-        @Override
-        protected void onPostExecute(Pair<Movie, Throwable> movieThrowablePair) {
-            if (movieThrowablePair.second != null) {
-                callback.onFailure(movieThrowablePair.second);
-            } else {
-                callback.onResponse(movieThrowablePair.first);
-            }
-        }
-    }
-
-    public void getMovieByTitleAsync(String title, final Callback<Movie> callback) {
-        new MovieByTitleAsync(title, callback).execute();
-    }
-
-    private class MovieByTitleAsync extends AsyncTask<Void, Void, Pair<Movie, Throwable>> {
-        private String title;
-        private Callback<Movie> callback;
-
-        public MovieByTitleAsync(String title, Callback<Movie> callback) {
-            this.title = title;
-            this.callback = callback;
-        }
-
-        @Override
-        protected Pair<Movie, Throwable> doInBackground(Void... voids) {
-            try {
-                Movie movie = api.getMovieByTitle(title).execute().body();
-                movie.setFull(true);
-                if (movie.getImdbID() == null) {
-                    return new Pair<>(null, null);
-                }
-
-                movie = new DBService().saveMovie(movie);
-
-                return new Pair<>(movie, null);
-            } catch (IOException e) {
-                return new Pair<>(null, (Throwable) e);
-            }
-        }
-
-        @Override
-        protected void onPostExecute(Pair<Movie, Throwable> movieThrowablePair) {
-            if (movieThrowablePair.second != null) {
-                callback.onFailure(movieThrowablePair.second);
-            } else {
-                callback.onResponse(movieThrowablePair.first);
-            }
-        }
-    }
-
-    public interface Callback<T> {
-        void onResponse(T data);
-
-        void onFailure(Throwable t);
-    }
 
 }

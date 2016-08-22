@@ -17,7 +17,7 @@ import java.util.Date;
 @Table(database = MovieInfoDB.class)
 public class Movie extends BaseModel {
     public enum MovieType {
-        series, movie, episode
+        series, movie, episode, game
     }
 
     @Column

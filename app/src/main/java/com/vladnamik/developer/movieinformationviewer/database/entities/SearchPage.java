@@ -72,6 +72,14 @@ public class SearchPage extends BaseModel {
         return Search;
     }
 
+    public void setMovies(List<Movie> movies) {
+        Search = movies;
+    }
+
+    public void setTotalResults(Integer totalResults) {
+        this.totalResults = totalResults;
+    }
+
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
