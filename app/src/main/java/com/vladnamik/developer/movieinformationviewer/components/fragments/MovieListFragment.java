@@ -10,10 +10,9 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import com.vladnamik.developer.movieinformationviewer.R;
-import com.vladnamik.developer.movieinformationviewer.components.Application;
 import com.vladnamik.developer.movieinformationviewer.database.entities.Movie;
 import com.vladnamik.developer.movieinformationviewer.database.entities.SearchPage;
-import com.vladnamik.developer.movieinformationviewer.main.DataLoaderUsedService;
+import com.vladnamik.developer.movieinformationviewer.main.DataLoaderMock;
 
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EFragment;
@@ -98,8 +97,8 @@ public class MovieListFragment extends ListFragment {
     void tryToAddNewDataInList() {
         Log.d(MOVIE_LIST_FRAGMENT_LOG_TAG, "start trying to add new data in list");
         try {
-            SearchPage searchPage = new DataLoaderUsedService((Application) getActivity().getApplication())
-                    .loadPage(getActivity(), query, nextPageToUploadNumber);
+            SearchPage searchPage = new DataLoaderMock()
+                    .loadPage(query, nextPageToUploadNumber);
             if (searchPage != null) {
                 Log.d(MOVIE_LIST_FRAGMENT_LOG_TAG, "start process response");
                 allMoviesOnQueryNumber = searchPage.getTotalResults();

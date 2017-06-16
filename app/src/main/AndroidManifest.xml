@@ -21,9 +21,9 @@
         <activity android:name=".components.activities.MovieListActivity_" />
         <activity android:name=".components.activities.FullMovieInfoActivity_" />
 
-        <service
-            android:name=".components.services.APIService"
-            android:exported="false" />
+        <!--<service-->
+        <!--android:name=".components.services.APIService"-->
+        <!--android:exported="false" />-->
     </application>
 
 </manifest>

@@ -9,9 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.vladnamik.developer.movieinformationviewer.R;
-import com.vladnamik.developer.movieinformationviewer.components.Application;
 import com.vladnamik.developer.movieinformationviewer.database.entities.Movie;
-import com.vladnamik.developer.movieinformationviewer.main.DataLoaderUsedService;
+import com.vladnamik.developer.movieinformationviewer.main.DataLoaderMock;
 
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EFragment;
@@ -65,8 +64,8 @@ public class FullMovieInfoFragment extends Fragment {
     void getMovieAndFill() {
         try {
             Log.d(FULL_MOVIE_INFO_FRAGMENT_LOG_TAG, "trying to upload movie");
-            movie = new DataLoaderUsedService((Application) getActivity().getApplication())
-                    .loadFullMovieByImdbId(getActivity(), movieImdbId);
+            movie = new DataLoaderMock()
+                    .loadFullMovieByImdbId(movieImdbId);
             Log.d(FULL_MOVIE_INFO_FRAGMENT_LOG_TAG, "movie was uploaded successfully");
             fillMovieFields();
         } catch (IOException e) {
@@ -87,7 +86,7 @@ public class FullMovieInfoFragment extends Fragment {
             releaseDateTextView.setText(movie.getReleased().toString());
         }
         Log.d(FULL_MOVIE_INFO_FRAGMENT_LOG_TAG, movie.getPoster());
-        if (movie.getMoviePoster().getMoviePoster() != null) {
+        if (movie.getMoviePoster() != null && movie.getMoviePoster().getMoviePoster() != null) {
             byte[] moviePosterBlob = movie.getMoviePoster().getMoviePoster().getBlob();
             posterImageView.setImageBitmap(BitmapFactory.decodeByteArray(moviePosterBlob, 0, moviePosterBlob.length));
         }

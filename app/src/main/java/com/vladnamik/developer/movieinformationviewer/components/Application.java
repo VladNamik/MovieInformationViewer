@@ -72,7 +72,7 @@ public class Application extends android.app.Application {
         }
     }
 
-    static class FloatNewDeserializer implements JsonDeserializer<Float> {
+    public static class FloatNewDeserializer implements JsonDeserializer<Float> {
         @Override
         public Float deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
             if (json == null || json.getAsString().equals("") || json.getAsString().equals("N/A")) {
@@ -83,7 +83,7 @@ public class Application extends android.app.Application {
         }
     }
 
-    static class DateNewDeserializer implements JsonDeserializer<Date> {
+    public static class DateNewDeserializer implements JsonDeserializer<Date> {
         @Override
         public Date deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
             if (json == null || json.getAsString().equals("") || json.getAsString().equals("N/A")) {

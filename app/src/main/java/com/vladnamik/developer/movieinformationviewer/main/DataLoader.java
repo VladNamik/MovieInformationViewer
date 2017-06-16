@@ -10,7 +10,7 @@ import com.vladnamik.developer.movieinformationviewer.database.entities.SearchPa
 
 import java.io.IOException;
 
-public class DataLoader {
+public class DataLoader implements IDataLoader {
     private static final String DATA_LOADER_LOG_TAG = "DataLoader";
 
     private Application application;
