@@ -1,32 +1,15 @@
 apply plugin: 'com.android.application'
-apply plugin: 'android-apt'
-apply plugin: 'com.neenbedankt.android-apt'
 
 def dbflow_version = "3.1.1"
-def AAVersion = '4.1.0'
-
-
-apt {
-    arguments {
-        androidManifestFile variant.outputs[0]?.processResources?.manifestFile
-        // if you have multiple outputs (when using splits), you may want to have other index than 0
-
-        // you should set your package name here if you are using different application IDs
-        // resourcePackageName "your.package.name"
-
-        // You can set optional annotation processing options here, like these commented options:
-        // logLevel 'INFO'
-        // logFile '/var/log/aa.log'
-    }
-}
+def AAVersion = '4.4.0'
 
 android {
-    compileSdkVersion 24
-    buildToolsVersion '25.0.0'
+    compileSdkVersion 27
+    buildToolsVersion '27.0.3'
     defaultConfig {
         applicationId "com.vladnamik.developer.movieinformationviewer"
         minSdkVersion 17
-        targetSdkVersion 24
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -40,30 +23,32 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 
 //    Retrofit and Picasso
 
 // Android Annotations
-    apt "org.androidannotations:androidannotations:$AAVersion"
-    compile "org.androidannotations:androidannotations-api:$AAVersion"
+    annotationProcessor "org.androidannotations:androidannotations:$AAVersion"
+    api "org.androidannotations:androidannotations-api:$AAVersion"
 
 // DBFlow
-    apt "com.github.Raizlabs.DBFlow:dbflow-processor:${dbflow_version}"
-    compile "com.github.Raizlabs.DBFlow:dbflow-core:${dbflow_version}"
-    compile "com.github.Raizlabs.DBFlow:dbflow:${dbflow_version}"
+    annotationProcessor "com.github.Raizlabs.DBFlow:dbflow-processor:${dbflow_version}"
+
+    annotationProcessor "com.github.Raizlabs.DBFlow:dbflow-processor:${dbflow_version}"
+    api "com.github.Raizlabs.DBFlow:dbflow-core:${dbflow_version}"
+    api "com.github.Raizlabs.DBFlow:dbflow:${dbflow_version}"
     // sql-cipher database encryption (optional)
-    compile "com.github.Raizlabs.DBFlow:dbflow-sqlcipher:${dbflow_version}@aar"
+    api "com.github.Raizlabs.DBFlow:dbflow-sqlcipher:${dbflow_version}@aar"
 
 
-    compile 'com.android.support:appcompat-v7:24.1.1'
-    compile 'com.google.code.gson:gson:2.6.2'
-    compile 'com.squareup.retrofit2:retrofit:2.1.0'
-    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
-    compile 'com.squareup.picasso:picasso:2.3.3'
-    compile 'net.zetetic:android-database-sqlcipher:3.5.1'
-    testCompile 'junit:junit:4.12'
+    api 'com.android.support:appcompat-v7:27.1.1'
+    api 'com.google.code.gson:gson:2.6.2'
+    api 'com.squareup.retrofit2:retrofit:2.1.0'
+    api 'com.squareup.retrofit2:converter-gson:2.1.0'
+    api 'com.squareup.picasso:picasso:2.3.3'
+    api 'net.zetetic:android-database-sqlcipher:3.5.1'
+    testImplementation 'junit:junit:4.12'
 }
