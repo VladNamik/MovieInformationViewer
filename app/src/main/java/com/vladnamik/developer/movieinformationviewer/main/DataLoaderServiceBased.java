@@ -19,12 +19,12 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class DataLoaderUsedService {
+public class DataLoaderServiceBased {
     private static final String DATA_LOADER_LOG_TAG = "DataLoader";
 
     private Application application;
 
-    public DataLoaderUsedService(Application application) {
+    public DataLoaderServiceBased(Application application) {
         this.application = application;
     }
 

@@ -9,8 +9,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.vladnamik.developer.movieinformationviewer.R;
+import com.vladnamik.developer.movieinformationviewer.components.Application;
 import com.vladnamik.developer.movieinformationviewer.database.entities.Movie;
+import com.vladnamik.developer.movieinformationviewer.main.DataLoader;
 import com.vladnamik.developer.movieinformationviewer.main.DataLoaderMock;
+import com.vladnamik.developer.movieinformationviewer.main.DataLoaderServiceBased;
 
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EFragment;
@@ -64,7 +67,7 @@ public class FullMovieInfoFragment extends Fragment {
     void getMovieAndFill() {
         try {
             Log.d(FULL_MOVIE_INFO_FRAGMENT_LOG_TAG, "trying to upload movie");
-            movie = new DataLoaderMock()
+            movie = new DataLoader((Application)getActivity().getApplication())
                     .loadFullMovieByImdbId(movieImdbId);
             Log.d(FULL_MOVIE_INFO_FRAGMENT_LOG_TAG, "movie was uploaded successfully");
             fillMovieFields();
