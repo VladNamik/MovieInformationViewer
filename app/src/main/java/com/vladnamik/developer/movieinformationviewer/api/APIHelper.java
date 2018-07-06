@@ -7,7 +7,7 @@ import com.vladnamik.developer.movieinformationviewer.database.entities.SearchPa
 import java.io.IOException;
 
 public class APIHelper {
-    private static final String API_HELPER_LOG_TAG = "APIHelper";
+    private static final String LOG_TAG = "APIHelper";
     private OmdbAPI api;
 
     public APIHelper(OmdbAPI api) {

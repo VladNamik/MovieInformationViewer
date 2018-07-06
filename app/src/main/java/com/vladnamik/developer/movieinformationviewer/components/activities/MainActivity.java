@@ -15,7 +15,7 @@ import org.androidannotations.annotations.ViewById;
 
 @EActivity(R.layout.activity_search_movie)
 public class MainActivity extends AppCompatActivity {
-    private static final String MAIN_ACTIVITY_LOG_TAG = "MainActivity";
+    private static final String LOG_TAG = "MainActivity";
     public static final String EXTRA_SEARCH_QUERY = "query";
 
     @App
@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
 
     @AfterViews
     void afterViews() {
+        searchView.setQueryHint(getString(R.string.search_hint));
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {

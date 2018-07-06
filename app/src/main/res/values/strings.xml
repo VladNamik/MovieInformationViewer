@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MovieInformationViewer</string>
+    <string name="app_name">Movvy</string>
     <string name="year">year</string>
     <string name="film_description">Film description</string>
     <string name="genres">Genres</string>
@@ -10,4 +10,9 @@
     <string name="search">Search</string>
     <string name="search_results_for">"Search results for "</string>
     <string name="search_results_number">"Number of results is "</string>
+    <string name="search_hint">Search</string>
+    <string name="app_image_description">@string/app_name</string>
+
+    <string name="no_answer">N/A</string>
+    <string name="no_image">Image not available</string>
 </resources>

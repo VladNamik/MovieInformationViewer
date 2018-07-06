@@ -21,13 +21,24 @@
             android:textSize="36sp"
             tools:text="Suits (series, 2011-)" />
 
-        <ImageView
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/full_movie_info_fragment_poster_imageview"
-            android:scaleType="centerInside"
-            android:layout_margin="20dp"
-            tools:src="@drawable/sample_movie_poster" />
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/full_movie_info_fragment_no_image"
+                style="@style/movie_params_value"
+                tools:text="Image not available"
+                android:layout_gravity="center"/>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/full_movie_info_fragment_poster_imageview"
+                android:scaleType="centerInside"
+                android:layout_margin="20dp"
+                tools:src="@drawable/sample_movie_poster" />
+        </FrameLayout>
 
         <TextView
             android:layout_width="match_parent"

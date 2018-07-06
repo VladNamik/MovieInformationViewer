@@ -11,7 +11,7 @@ import com.vladnamik.developer.movieinformationviewer.components.Application;
 import java.io.IOException;
 
 public class APIService extends IntentService {
-    private static final String API_SERVICE_LOG_TAG = "APIService";
+    private static final String LOG_TAG = "APIService";
     private static final String ACTION_LOAD_PAGE = "com.vladnamik.developer.movieinformationviewer.components.services.action.LOAD_PAGE";
     private static final String ACTION_FULL_MOVIE_INFO = "com.vladnamik.developer.movieinformationviewer.components.services.action.FULL_MOVIE_INFO";
     public static final String ACTION_BROADCAST_FULL_MOVIE_INFO = "com.vladnamik.developer.movieinformationviewer.components.services.action.BROADCAST_FULL_MOVIE_INFO";
@@ -38,7 +38,7 @@ public class APIService extends IntentService {
     @Override
     public void onStart(Intent intent, int startId) {
         super.onStart(intent, startId);
-        Log.d(API_SERVICE_LOG_TAG, "onStart");
+        Log.d(LOG_TAG, "onStart");
     }
 
     public static void startActionLoadPage(Context context, String query, int pageNumber) {
@@ -51,10 +51,10 @@ public class APIService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        Log.d(API_SERVICE_LOG_TAG, "onHandleIntent");
+        Log.d(LOG_TAG, "onHandleIntent");
         if (intent != null) {
             final String action = intent.getAction();
-            Log.d(API_SERVICE_LOG_TAG, "action = " + action);
+            Log.d(LOG_TAG, "action = " + action);
             if (ACTION_LOAD_PAGE.equals(action)) {
                 final String query = intent.getStringExtra(EXTRA_QUERY);
                 final int pageNumber = intent.getIntExtra(EXTRA_PAGE_NUMBER, 0);
@@ -67,7 +67,7 @@ public class APIService extends IntentService {
     }
 
     private void handleActionLoadPage(String query, int pageNumber) {
-        Log.d(API_SERVICE_LOG_TAG, "start handleActionLoadPage()");
+        Log.d(LOG_TAG, "start handleActionLoadPage()");
         try {
             ((Application) getApplication()).getApiHelper().getPage(query, pageNumber);
             Intent localIntent = new Intent(ACTION_BROADCAST_LOAD_PAGE)
@@ -82,7 +82,7 @@ public class APIService extends IntentService {
                     .putExtra(EXTRA_PAGE_NUMBER, pageNumber);
             LocalBroadcastManager.getInstance(this).sendBroadcast(localIntent);
         } finally {
-            Log.d(API_SERVICE_LOG_TAG, "end handleActionLoadPage()");
+            Log.d(LOG_TAG, "end handleActionLoadPage()");
         }
     }
 
@@ -104,12 +104,12 @@ public class APIService extends IntentService {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.d(API_SERVICE_LOG_TAG, "onDestroy");
+        Log.d(LOG_TAG, "onDestroy");
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.d(API_SERVICE_LOG_TAG, "onCreate");
+        Log.d(LOG_TAG, "onCreate");
     }
 }

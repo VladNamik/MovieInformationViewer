@@ -19,11 +19,11 @@ import java.util.Date;
 import java.util.List;
 
 public class DBHelper {
-    private static final String DB_SERVICE_LOG_TAG = "DBHelper";
-
+    private static final String LOG_TAG = "DBHelper";
+    
     public String getAllDBInfo(boolean deleteAll) {
 
-        Log.d(DB_SERVICE_LOG_TAG, "start getting movie posters info");
+        Log.d(LOG_TAG, "start getting movie posters info");
         List<MoviePoster> moviePosters = SQLite.select().from(MoviePoster.class).queryList();
         StringBuilder moviePostersString = new StringBuilder("Movie Posters:\n");
         for (MoviePoster moviePoster : moviePosters) {
@@ -33,7 +33,7 @@ public class DBHelper {
             }
         }
 
-        Log.d(DB_SERVICE_LOG_TAG, "start getting movies info");
+        Log.d(LOG_TAG, "start getting movies info");
         List<Movie> movies = SQLite.select().from(Movie.class).queryList();
         StringBuilder moviesString = new StringBuilder("Movies:\n");
         for (Movie movie : movies) {
@@ -44,7 +44,7 @@ public class DBHelper {
         }
 
 
-        Log.d(DB_SERVICE_LOG_TAG, "start getting search page movies info");
+        Log.d(LOG_TAG, "start getting search page movies info");
         List<SearchPageMovie> searchPageMovies = SQLite.select().from(SearchPageMovie.class).queryList();
         StringBuilder searchPageMoviesString = new StringBuilder("Search Page Movies:\n");
         for (SearchPageMovie searchPageMovie : searchPageMovies) {
@@ -55,7 +55,7 @@ public class DBHelper {
         }
 
 
-        Log.d(DB_SERVICE_LOG_TAG, "start getting search pages info");
+        Log.d(LOG_TAG, "start getting search pages info");
         List<SearchPage> searchPages = SQLite.select().from(SearchPage.class).queryList();
         StringBuilder searchPagesString = new StringBuilder("Search Pages:\n");
         for (SearchPage searchPage : searchPages) {
@@ -65,7 +65,7 @@ public class DBHelper {
             }
         }
 
-        Log.d(DB_SERVICE_LOG_TAG, "start getting search queries info");
+        Log.d(LOG_TAG, "start getting search queries info");
         List<SearchQuery> searchQueries = SQLite.select().from(SearchQuery.class).queryList();
         StringBuilder searchQueriesString = new StringBuilder("Search Queries:\n");
         for (SearchQuery searchQuery : searchQueries) {
@@ -75,7 +75,7 @@ public class DBHelper {
             }
         }
 
-        Log.d(DB_SERVICE_LOG_TAG, "end method .getAllDBInfo()");
+        Log.d(LOG_TAG, "end method .getAllDBInfo()");
         return searchQueriesString.append(searchPagesString.toString())
                 .append(searchPageMoviesString.toString())
                 .append(moviesString.toString())
@@ -160,7 +160,7 @@ public class DBHelper {
             try {
                 moviePoster.downloadPoster(movie.getPoster());
             } catch (IOException e) {
-                Log.w(DB_SERVICE_LOG_TAG, "Can't download poster from " + movie.getPoster());
+                Log.w(LOG_TAG, "Can't download poster from " + movie.getPoster());
                 e.printStackTrace();
             } finally {
                 moviePoster.save();
@@ -174,7 +174,7 @@ public class DBHelper {
     public void updateMoviesLastSearchDate(List<Movie> movies) {
         if (movies != null) {
             for (Movie movie : movies) {
-                Log.d(DB_SERVICE_LOG_TAG, "updating " + movie.toString());
+                Log.d(LOG_TAG, "updating " + movie.toString());
                 movie.setLastSearchDate(new Date());
                 movie.save();
             }

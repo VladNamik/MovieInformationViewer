@@ -30,7 +30,7 @@ import java.util.Map;
 
 @EFragment
 public class MovieListFragment extends ListFragment {
-    private static final String MOVIE_LIST_FRAGMENT_LOG_TAG = "MovieListFragment";
+    private static final String LOG_TAG = "MovieListFragment";
     private static final String NAME_KEY = "name";
     private static final String TYPE_YEAR_KEY = "typeYear";
     private String query;
@@ -60,7 +60,7 @@ public class MovieListFragment extends ListFragment {
         getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Log.d(MOVIE_LIST_FRAGMENT_LOG_TAG, "start onListItemClick()");
+                Log.d(LOG_TAG, "start onListItemClick()");
                 view.setSelected(true);
                 onMovieSelected.onMovieSelected(movies.get(i - 1).getImdbID());//i - 1 because of header
             }
@@ -75,7 +75,7 @@ public class MovieListFragment extends ListFragment {
             @Override
             public void onScroll(AbsListView lw, final int firstVisibleItem,
                                  final int visibleItemCount, final int totalItemCount) {
-                Log.d(MOVIE_LIST_FRAGMENT_LOG_TAG, "firstVisibleItem = " + firstVisibleItem
+                Log.d(LOG_TAG, "firstVisibleItem = " + firstVisibleItem
                         + "; visibleItemCount = " + visibleItemCount + "; allMoviesOnQueryNumber = "
                         + allMoviesOnQueryNumber + "; moviesNumber = " + movies.size());
                 // -1 because of header
@@ -87,8 +87,8 @@ public class MovieListFragment extends ListFragment {
         });
 
         headerView = getActivity().getLayoutInflater().inflate(R.layout.header_for_movie_listview, null);
-        headerSearchQuery = (TextView) headerView.findViewById(R.id.header_for_movie_listview_search_query);
-        headerSearchResultsNumber = (TextView) headerView.findViewById(R.id.header_for_movie_listview_search_results_number);
+        headerSearchQuery = headerView.findViewById(R.id.header_for_movie_listview_search_query);
+        headerSearchResultsNumber = headerView.findViewById(R.id.header_for_movie_listview_search_results_number);
         headerSearchQuery.setText(query);
         headerSearchResultsNumber.setText(String.format(Locale.getDefault(), "%d", allMoviesOnQueryNumber));
         getListView().addHeaderView(headerView);
@@ -98,33 +98,33 @@ public class MovieListFragment extends ListFragment {
 
     @Background(serial = "list_data")
     void tryToAddNewDataInList() {
-        Log.d(MOVIE_LIST_FRAGMENT_LOG_TAG, "start trying to add new data in list");
+        Log.d(LOG_TAG, "start trying to add new data in list");
         try {
-            SearchPage searchPage = new DataLoader((Application)getActivity().getApplication())
+            SearchPage searchPage = new DataLoader((Application) getActivity().getApplication())
                     .loadPage(query, nextPageToUploadNumber);
             if (searchPage != null) {
-                Log.d(MOVIE_LIST_FRAGMENT_LOG_TAG, "start process response");
+                Log.d(LOG_TAG, "start process response");
                 allMoviesOnQueryNumber = searchPage.getTotalResults();
                 nextPageToUploadNumber++;
                 addNewDataToAdapter(searchPage.getMovies());
             }
 
         } catch (IOException e) {
-            Log.d(MOVIE_LIST_FRAGMENT_LOG_TAG, "data loading failed");
+            Log.d(LOG_TAG, "data loading failed");
             e.printStackTrace();
         }
-        Log.d(MOVIE_LIST_FRAGMENT_LOG_TAG, "end trying to add new data in list");
+        Log.d(LOG_TAG, "end trying to add new data in list");
     }
 
     @UiThread
     void addNewDataToAdapter(List<Movie> movies) {
-        Log.d(MOVIE_LIST_FRAGMENT_LOG_TAG, "start adding new data to adapter");
+        Log.d(LOG_TAG, "start adding new data to adapter");
         headerSearchResultsNumber.setText(String.format(Locale.getDefault(), "%d", allMoviesOnQueryNumber));
         Map<String, String> bufMap;
         for (Movie movie : movies) {
-            Log.d(MOVIE_LIST_FRAGMENT_LOG_TAG, movie.toString());
+            Log.d(LOG_TAG, movie.toString());
             bufMap = new HashMap<>();
-            bufMap.put(NAME_KEY, movie.getTitle());
+            bufMap.put(NAME_KEY, String.format(Locale.getDefault(), "%d) %s", this.moviesData.size() + 1, movie.getTitle()));
             bufMap.put(TYPE_YEAR_KEY, movie.getType().toString() + ", " + movie.getYear());
             this.moviesData.add(bufMap);
         }

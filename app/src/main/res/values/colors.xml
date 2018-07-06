@@ -1,8 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
-    <color name="movie_list_view_item_pressed">#3F51B5</color>
-    <color name="movie_list_view_item_default">#FFFFFF</color>
+    <color name="colorPrimary">#222222</color>
+    <color name="colorPrimaryDark">#181622</color>
+    <color name="colorAccent">#FFA500</color>
+    <color name="colorAccentLight">#FFFF48</color>
+    <color name="colorAccentTint">#FFFF36</color>
+    <color name="backgroundMain">#FFFFFF</color>
+    <color name="backgroundDark">#E2E2E2</color>
+
+    <color name="colorPrimaryAnalog">#006662</color>
+    <color name="colorPrimaryDarkAnalog">#003633</color>
+    <color name="colorAccentAnalog">#00E875</color>
+
+    <color name="colorDivider">#10000000</color>
+    <color name="colorBlur">#50000000</color>
 </resources>

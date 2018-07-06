@@ -6,9 +6,9 @@
     android:layout_height="match_parent">
 
     <fragment
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
         android:id="@+id/only_full_movie_info_activity_fragment"
         android:name="com.vladnamik.developer.movieinformationviewer.components.fragments.FullMovieInfoFragment_"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         tools:layout="@layout/fragment_full_movie_info" />
 </LinearLayout>
