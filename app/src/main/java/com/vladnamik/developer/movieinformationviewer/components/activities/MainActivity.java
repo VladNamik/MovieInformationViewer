@@ -3,6 +3,8 @@ package com.vladnamik.developer.movieinformationviewer.components.activities;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import com.vladnamik.developer.movieinformationviewer.R;
 import com.vladnamik.developer.movieinformationviewer.components.Application;
@@ -26,6 +28,12 @@ public class MainActivity extends AppCompatActivity {
 
     @AfterViews
     void afterViews() {
+        searchView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                searchView.setIconified(false);
+            }
+        });
         searchView.setQueryHint(getString(R.string.search_hint));
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
