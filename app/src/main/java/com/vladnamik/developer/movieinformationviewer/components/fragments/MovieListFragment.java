@@ -60,9 +60,11 @@ public class MovieListFragment extends ListFragment {
         getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Log.d(LOG_TAG, "start onListItemClick()");
-                view.setSelected(true);
-                onMovieSelected.onMovieSelected(movies.get(i - 1).getImdbID());//i - 1 because of header
+                if (i != 0) { // avoiding header clicking
+                    Log.d(LOG_TAG, "start onListItemClick()");
+                    view.setSelected(true);
+                    onMovieSelected.onMovieSelected(movies.get(i - 1).getImdbID()); // i - 1 because of header
+                }
             }
         });
 
@@ -87,6 +89,7 @@ public class MovieListFragment extends ListFragment {
         });
 
         headerView = getActivity().getLayoutInflater().inflate(R.layout.header_for_movie_listview, null);
+        headerView.setClickable(false);
         headerSearchQuery = headerView.findViewById(R.id.header_for_movie_listview_search_query);
         headerSearchResultsNumber = headerView.findViewById(R.id.header_for_movie_listview_search_results_number);
         headerSearchQuery.setText(query);
