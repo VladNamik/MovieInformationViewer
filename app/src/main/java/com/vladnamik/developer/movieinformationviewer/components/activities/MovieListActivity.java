@@ -14,6 +14,7 @@ import com.vladnamik.developer.movieinformationviewer.components.fragments.Movie
 
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
+import org.androidannotations.annotations.InstanceState;
 
 @EActivity(R.layout.activity_only_movie_list)
 public class MovieListActivity extends AppCompatActivity
@@ -23,6 +24,7 @@ public class MovieListActivity extends AppCompatActivity
     public static final String EXTRA_MOVIE_IMDB_ID = "movieImdbId";
 
     @Extra(MainActivity.EXTRA_SEARCH_QUERY)
+    @InstanceState
     String searchQuery;
 
     @Override
@@ -51,6 +53,7 @@ public class MovieListActivity extends AppCompatActivity
     @Override
     public boolean onQueryTextSubmit(String s) {
         Log.d(LOG_TAG, "onQueryTextSubmit() " + s);
+        searchQuery = s;
         MovieListFragment movieListFragment = (MovieListFragment) getFragmentManager()
                 .findFragmentById(R.id.only_movie_list_activity_list_fragment);
         movieListFragment.refreshQuery(s);

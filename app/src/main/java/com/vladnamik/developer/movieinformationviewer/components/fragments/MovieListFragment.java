@@ -103,13 +103,15 @@ public class MovieListFragment extends ListFragment {
     void tryToAddNewDataInList() {
         Log.d(LOG_TAG, "start trying to add new data in list");
         try {
-            SearchPage searchPage = new DataLoader((Application) getActivity().getApplication())
-                    .loadPage(query, nextPageToUploadNumber);
-            if (searchPage != null) {
-                Log.d(LOG_TAG, "start process response");
-                allMoviesOnQueryNumber = searchPage.getTotalResults();
-                nextPageToUploadNumber++;
-                addNewDataToAdapter(searchPage.getMovies());
+            if (getActivity() != null) {
+                SearchPage searchPage = new DataLoader((Application) getActivity().getApplication())
+                        .loadPage(query, nextPageToUploadNumber);
+                if (searchPage != null) {
+                    Log.d(LOG_TAG, "start process response");
+                    allMoviesOnQueryNumber = searchPage.getTotalResults();
+                    nextPageToUploadNumber++;
+                    addNewDataToAdapter(searchPage.getMovies());
+                }
             }
 
         } catch (IOException e) {
