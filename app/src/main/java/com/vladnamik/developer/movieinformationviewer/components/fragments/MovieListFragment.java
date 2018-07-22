@@ -5,6 +5,9 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.View;
 import android.widget.AbsListView;
@@ -24,6 +27,7 @@ import com.vladnamik.developer.movieinformationviewer.main.DataLoaderServiceBase
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.UiThread;
+import org.androidannotations.annotations.ViewById;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -44,12 +48,24 @@ public class MovieListFragment extends ListFragment {
     private View headerView;
     private TextView headerSearchQuery;
     private TextView headerSearchResultsNumber;
+    private SwipeRefreshLayout swipeLayout;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         changeListViewStyle();
+
+        swipeLayout = getActivity().findViewById(R.id.swipe_container);
+        if (swipeLayout != null)
+        {
+            swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    refreshQuery(query);
+                }
+            });
+        }
 
         onMovieSelected = (OnMovieSelected) getActivity();
 
@@ -127,7 +143,14 @@ public class MovieListFragment extends ListFragment {
             Log.d(LOG_TAG, "data loading failed");
             e.printStackTrace();
         }
+        afterNewDataAdded();
         Log.d(LOG_TAG, "end trying to add new data in list");
+    }
+
+    @UiThread
+    void afterNewDataAdded()
+    {
+        swipeLayout.setRefreshing(false);
     }
 
     @UiThread

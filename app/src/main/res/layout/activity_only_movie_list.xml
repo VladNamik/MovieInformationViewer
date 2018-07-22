@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
+    android:id="@+id/swipe_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -10,4 +11,4 @@
         android:id="@+id/only_movie_list_activity_list_fragment"
         android:name="com.vladnamik.developer.movieinformationviewer.components.fragments.MovieListFragment_" />
 
-</LinearLayout>
+</android.support.v4.widget.SwipeRefreshLayout>

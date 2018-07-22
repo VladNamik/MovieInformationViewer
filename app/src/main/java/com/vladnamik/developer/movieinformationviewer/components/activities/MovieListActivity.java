@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import com.vladnamik.developer.movieinformationviewer.R;
 import com.vladnamik.developer.movieinformationviewer.components.fragments.MovieListFragment;
 
+import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.InstanceState;
@@ -37,6 +38,26 @@ public class MovieListActivity extends AppCompatActivity
         Intent intent = new Intent(this, FullMovieInfoActivity_.class);
         intent.putExtra(EXTRA_MOVIE_IMDB_ID, movieImdbId);
         startActivity(intent);
+    }
+
+    @AfterViews
+    public void createAppBar()
+    {
+        // add back arrow to toolbar
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // handle arrow click here
+        if (item.getItemId() == android.R.id.home) {
+            finish(); // close this activity and return to preview activity (if there is any)
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
