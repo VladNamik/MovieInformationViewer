@@ -4,11 +4,11 @@
     <color name="colorPrimaryDark">#DD8500</color>
     <color name="colorAccent">#181622</color>
     <color name="colorAccentLight">#222222</color>
-    <color name="colorAccentTint">#FFFF36</color>
     <color name="backgroundMain">#FFFFFF</color>
     <color name="backgroundDark">#E2E2E2</color>
     <color name="colorPrimaryText">#181622</color>
     <color name="colorSecondaryText">#333333</color>
+    <color name="colorAccentText">#202020</color>
 
     <color name="colorPrimaryAnalog">#006662</color>
     <color name="colorPrimaryDarkAnalog">#003633</color>

@@ -82,6 +82,9 @@ public class FullMovieInfoFragment extends Fragment {
 
     @UiThread
     void fillMovieFields() {
+        if (titleTextView == null)
+            return;
+
         titleTextView.setText(String.format("%s (%s, %s)", movie.getTitle(), movie.getType(), movie.getYear()));
         filmDescriptionTextView.setText(movie.getPlot());
         countryTextView.setText(movie.getCountry());

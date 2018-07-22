@@ -47,7 +47,7 @@ public class MoviePoster extends BaseModel {
         if (moviePoster != null) {
             return;
         }
-        if (url == null || url.equals("") || url.equals("N/A")) {
+        if (!isValidUrl(url)) {
             return;
         }
 
@@ -70,7 +70,7 @@ public class MoviePoster extends BaseModel {
     }
 
     public void downloadPoster(Context context, String url) throws IOException {
-        if (url == null || url.equals("") || url.equals("N/A")) {
+        if (!isValidUrl(url)) {
             return;
         }
         if (moviePoster != null) {
@@ -82,5 +82,10 @@ public class MoviePoster extends BaseModel {
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
         byte[] byteArray = stream.toByteArray();
         moviePoster = new Blob(stream.toByteArray());
+    }
+
+    public static boolean isValidUrl(String url)
+    {
+        return !(url == null || url.equals("") || url.equals("N/A"));
     }
 }

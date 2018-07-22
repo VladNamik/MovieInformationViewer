@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -12,110 +12,169 @@
         android:paddingLeft="16dp"
         android:paddingRight="16dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="6dp"
-            android:id="@+id/full_movie_info_fragment_title_textview"
-            android:textSize="36sp"
-            tools:text="Suits (series, 2011-)" />
-
-        <FrameLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/full_movie_info_fragment_no_image"
-                style="@style/movie_params_value"
-                tools:text="Image not available"
-                android:layout_gravity="center"/>
-            <ImageView
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:orientation="horizontal"
+            android:padding="20dp"
+            android:layout_marginBottom="20dp">
+
+            <FrameLayout
+                android:layout_width="100dp"
+                android:layout_height="150dp">
+
+                <TextView
+                    android:id="@+id/full_movie_info_fragment_no_image"
+                    style="@style/styleSecondaryText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    tools:text="Image not available" />
+
+                <ImageView
+                    android:id="@+id/full_movie_info_fragment_poster_imageview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scaleType="centerInside"
+                    tools:src="@drawable/sample_movie_poster"
+                    android:contentDescription="@string/no_image" />
+            </FrameLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/full_movie_info_fragment_poster_imageview"
-                android:scaleType="centerInside"
-                android:layout_margin="20dp"
-                tools:src="@drawable/sample_movie_poster" />
-        </FrameLayout>
+                android:layout_marginStart="16dp"
+                android:orientation="vertical">
 
-        <TextView
+                <TextView
+                    android:id="@+id/full_movie_info_fragment_title_textview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorPrimaryText"
+                    android:textSize="18sp"
+                    android:textIsSelectable="true"
+                    tools:text="Suits (series, 2011-)" />
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/stylePrimaryText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/imdb_rating" />
+
+                    <TextView
+                        android:id="@+id/full_movie_info_fragment_imdb_rating_textview"
+                        style="@style/styleSecondaryText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:text="4,80" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/stylePrimaryText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/release_date" />
+
+                    <TextView
+                        android:id="@+id/full_movie_info_fragment_release_date_textview"
+                        style="@style/styleSecondaryText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:text="22.04.1447 " />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/stylePrimaryText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/country" />
+
+                    <TextView
+                        android:id="@+id/full_movie_info_fragment_country_textview"
+                        style="@style/styleSecondaryText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:text="China" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/stylePrimaryText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/rated" />
+
+                    <TextView
+                        android:id="@+id/full_movie_info_fragment_rated_textview"
+                        style="@style/styleSecondaryText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:text="R" />
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/movie_params"
-            android:text="@string/release_date" />
+            android:orientation="vertical">
 
-        <TextView
+            <TextView
+                style="@style/stylePrimaryText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/genres" />
+
+            <TextView
+                android:id="@+id/full_movie_info_fragment_genres_textview"
+                style="@style/styleSecondaryText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="Action, Comedy" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/movie_params_value"
-            android:id="@+id/full_movie_info_fragment_release_date_textview"
-            tools:text="22.04.1447 " />
+            android:orientation="vertical">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/movie_params"
-            android:text="@string/country" />
+            <TextView
+                style="@style/stylePrimaryText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/film_description" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/movie_params_value"
-            android:id="@+id/full_movie_info_fragment_country_textview"
-            tools:text="China" />
+            <TextView
+                android:id="@+id/full_movie_info_fragment_film_description_textview"
+                style="@style/styleSecondaryText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="Sample film description" />
+        </LinearLayout>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/movie_params"
-            android:text="@string/genres" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/movie_params_value"
-            android:id="@+id/full_movie_info_fragment_genres_textview"
-            tools:text="Action, Comedy" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/movie_params"
-            android:text="@string/rated" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/movie_params_value"
-            android:id="@+id/full_movie_info_fragment_rated_textview"
-            tools:text="R" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/movie_params"
-            android:text="@string/imdb_rating" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/movie_params_value"
-            android:id="@+id/full_movie_info_fragment_imdb_rating_textview"
-            tools:text="Sample film description" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/movie_params"
-            android:text="@string/film_description" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/movie_params_value"
-            android:id="@+id/full_movie_info_fragment_film_description_textview"
-            tools:text="Sample film description" />
     </LinearLayout>
+
 </ScrollView>

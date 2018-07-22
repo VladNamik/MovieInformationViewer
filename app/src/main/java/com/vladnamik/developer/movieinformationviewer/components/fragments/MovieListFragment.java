@@ -1,6 +1,9 @@
 package com.vladnamik.developer.movieinformationviewer.components.fragments;
 
 import android.app.ListFragment;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,6 +14,7 @@ import android.widget.TextView;
 
 import com.vladnamik.developer.movieinformationviewer.R;
 import com.vladnamik.developer.movieinformationviewer.components.Application;
+import com.vladnamik.developer.movieinformationviewer.components.adapters.MovieListAdapter;
 import com.vladnamik.developer.movieinformationviewer.database.entities.Movie;
 import com.vladnamik.developer.movieinformationviewer.database.entities.SearchPage;
 import com.vladnamik.developer.movieinformationviewer.main.DataLoader;
@@ -31,12 +35,10 @@ import java.util.Map;
 @EFragment
 public class MovieListFragment extends ListFragment {
     private static final String LOG_TAG = "MovieListFragment";
-    private static final String NAME_KEY = "name";
-    private static final String TYPE_YEAR_KEY = "typeYear";
     private String query;
     private int nextPageToUploadNumber = 1;
     private int allMoviesOnQueryNumber = 0;
-    private List<Map<String, String>> moviesData = new ArrayList<>();
+    private MovieListAdapter listAdapter;
     private List<Movie> movies = new ArrayList<>();
     private OnMovieSelected onMovieSelected;
     private View headerView;
@@ -47,15 +49,14 @@ public class MovieListFragment extends ListFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        changeListViewStyle();
+
         onMovieSelected = (OnMovieSelected) getActivity();
 
         query = ((GetQueryParams) getActivity()).getQuery();
 
-        String[] from = {NAME_KEY, TYPE_YEAR_KEY};
-        int[] to = {R.id.movie_list_view_item_name, R.id.movie_list_view_item_type_year};
-        SimpleAdapter adapter = new SimpleAdapter(getActivity(), moviesData,
-                R.layout.movie_list_view_item, from, to);
-        setListAdapter(adapter);
+        listAdapter = new MovieListAdapter(movies, getActivity());
+        setListAdapter(listAdapter);
 
         getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -99,6 +100,14 @@ public class MovieListFragment extends ListFragment {
         tryToAddNewDataInList();
     }
 
+    protected void changeListViewStyle()
+    {
+        // divider
+        int[] colors = {0, getResources().getColor(R.color.colorAccent), 0};
+        getListView().setDivider(new GradientDrawable(GradientDrawable.Orientation.RIGHT_LEFT, colors));
+        getListView().setDividerHeight(1);
+    }
+
     @Background(serial = "list_data")
     void tryToAddNewDataInList() {
         Log.d(LOG_TAG, "start trying to add new data in list");
@@ -128,13 +137,9 @@ public class MovieListFragment extends ListFragment {
         Map<String, String> bufMap;
         for (Movie movie : movies) {
             Log.d(LOG_TAG, movie.toString());
-            bufMap = new HashMap<>();
-            bufMap.put(NAME_KEY, String.format(Locale.getDefault(), "%d) %s", this.moviesData.size() + 1, movie.getTitle()));
-            bufMap.put(TYPE_YEAR_KEY, movie.getType().toString() + ", " + movie.getYear());
-            this.moviesData.add(bufMap);
         }
         this.movies.addAll(movies);
-        ((SimpleAdapter) getListAdapter()).notifyDataSetChanged();
+        ((MovieListAdapter) getListAdapter()).notifyDataSetChanged();
     }
 
     @UiThread
@@ -144,9 +149,8 @@ public class MovieListFragment extends ListFragment {
         allMoviesOnQueryNumber = 0;
         headerSearchQuery.setText(query);
         headerSearchResultsNumber.setText(String.format(Locale.getDefault(), "%d", allMoviesOnQueryNumber));
-        moviesData.clear();
         movies.clear();
-        ((SimpleAdapter) getListAdapter()).notifyDataSetChanged();
+        ((MovieListAdapter)getListAdapter()).notifyDataSetChanged();
         tryToAddNewDataInList();
     }
 

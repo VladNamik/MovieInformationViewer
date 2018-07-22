@@ -17,10 +17,10 @@ public interface OmdbAPI {
     @GET("/?apikey=" + API_KEY)
     Call<SearchPage> search(@Query("s") String name, @Query("page") int pageNumber);
 
-    @GET("/?apikey=" + API_KEY)
+    @GET("/?apikey=" + API_KEY + "&plot=full")
     Call<Movie> getMovieByImdbId(@Query("i") String id);
 
-    @GET("/?apikey=" + API_KEY)
+    @GET("/?apikey=" + API_KEY + "&plot=full")
     Call<Movie> getMovieByTitle(@Query("t") String title);
 
 

@@ -30,6 +30,10 @@ public class DataLoader implements IDataLoader {
         } else {
             Log.d(LOG_TAG, "Found nothing in DB; start loading page from API");
             searchPage = application.getApiHelper().getPage(search, pageNumber);
+//            for (Movie movie: searchPage.getMovies())
+//            {
+//                loadFullMovieByImdbId(movie.getImdbID());
+//            }
             Log.d(LOG_TAG, "end getting page from API");
             return searchPage;
         }
