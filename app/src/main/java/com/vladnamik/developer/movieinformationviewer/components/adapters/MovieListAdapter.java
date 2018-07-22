@@ -80,7 +80,6 @@ public class MovieListAdapter extends ArrayAdapter<Movie> {
                 convertView.findViewById(R.id.movie_list_view_item_rating_line).setVisibility(View.INVISIBLE);
             }
 
-            // TODO: why not all images are loaded correctly (e.g. https://ia.media-imdb.com/images/M/MV5BMTc2MDkwNDg3NV5BMl5BanBnXkFtZTgwNzg0ODI4MDE@._V1_SX300.jpg)
             if (movie.getMoviePoster() != null && movie.getMoviePoster().getMoviePoster() != null) {
                 byte[] moviePosterBlob = movie.getMoviePoster().getMoviePoster().getBlob();
                 viewHolder.poster.setImageBitmap(BitmapFactory.decodeByteArray(moviePosterBlob, 0, moviePosterBlob.length));

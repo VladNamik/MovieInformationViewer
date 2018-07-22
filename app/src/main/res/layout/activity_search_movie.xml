@@ -12,6 +12,7 @@
         android:layout_height="88dp"
         android:layout_marginBottom="22dp"
         android:layout_above="@id/search_movie_activity_search_layout"
+        android:id="@+id/search_movie_activity_main_image"
         android:src="@drawable/ic_launcher_movie"
         android:contentDescription="@string/app_image_description"/>
 

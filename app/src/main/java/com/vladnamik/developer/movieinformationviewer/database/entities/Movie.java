@@ -113,6 +113,14 @@ public class Movie extends BaseModel {
     }
 
     public String getPoster() {
+        if (MoviePoster.isValidUrl(Poster))
+        {
+            // Because of bug in OmdbAPI (?)
+            if (Poster.contains("http:"))
+            {
+                Poster = Poster.replace("http:", "https:");
+            }
+        }
         return Poster;
     }
 
