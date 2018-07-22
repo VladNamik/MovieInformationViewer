@@ -102,6 +102,9 @@ public class MovieListFragment extends ListFragment {
                         && (firstVisibleItem + visibleItemCount - 1) < allMoviesOnQueryNumber) {
                     tryToAddNewDataInList();
                 }
+
+                int topRowVerticalPosition = (lw == null || lw.getChildCount() == 0) ? 0 : lw.getChildAt(0).getTop();
+                swipeLayout.setEnabled(firstVisibleItem == 0 && topRowVerticalPosition >= 0);
             }
         });
 
