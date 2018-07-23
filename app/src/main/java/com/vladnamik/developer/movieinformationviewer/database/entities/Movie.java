@@ -12,6 +12,7 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 import com.vladnamik.developer.movieinformationviewer.database.MovieInfoDB;
 
 import java.util.Date;
+import java.util.Locale;
 
 @SuppressWarnings("unused")
 @Table(database = MovieInfoDB.class)
@@ -202,6 +203,16 @@ public class Movie extends BaseModel {
 
     public Date getLastSearchDate() {
         return lastSearchDate;
+    }
+
+    public String getImdbUrl()
+    {
+        return imdbUrlFromId(getImdbID());
+    }
+
+    public static String imdbUrlFromId(String imdbId)
+    {
+        return String.format(Locale.getDefault(), "https://www.imdb.com/title/%s/", imdbId);
     }
 
 //    @Override

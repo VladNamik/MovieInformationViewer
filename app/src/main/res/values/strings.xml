@@ -17,4 +17,10 @@
     <string name="no_image">Image not available</string>
 
     <string name="transition_main_search">main_search</string>
+
+    <string name="share_subject">What do you think about this movie?</string>
+    <string name="share_via">Share via..</string>
+    <string name="share">Share</string>
+    <string name="link">Link</string>
+
 </resources>
