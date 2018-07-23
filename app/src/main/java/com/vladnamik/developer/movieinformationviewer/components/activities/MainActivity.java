@@ -1,10 +1,11 @@
 package com.vladnamik.developer.movieinformationviewer.components.activities;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 
 import com.vladnamik.developer.movieinformationviewer.R;
 import com.vladnamik.developer.movieinformationviewer.components.Application;
@@ -28,6 +29,13 @@ public class MainActivity extends AppCompatActivity {
 
     @AfterViews
     void afterViews() {
+
+        // set an exit transition
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            searchView.findViewById(R.id.search_src_text)
+                    .setTransitionName(getString(R.string.transition_main_search));
+        }
+
         searchView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -40,7 +48,19 @@ public class MainActivity extends AppCompatActivity {
             public boolean onQueryTextSubmit(String query) {
                 Intent intent = new Intent(MainActivity.this, MovieListActivity_.class);
                 intent.putExtra(EXTRA_SEARCH_QUERY, query);
-                startActivity(intent);
+                // Check if we're running on Android 5.0 or higher
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    // Apply activity transition
+                    startActivity(intent,
+                            ActivityOptions.makeSceneTransitionAnimation(
+                                    MainActivity.this,
+                                    searchView.findViewById(R.id.search_src_text),
+                                    getString(R.string.transition_main_search)
+                            ).toBundle());
+                } else {
+                    // Swap without transition
+                    startActivity(intent);
+                }
                 return true;
             }
 
@@ -49,5 +69,6 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
+
     }
 }

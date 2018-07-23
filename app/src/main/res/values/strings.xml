@@ -15,4 +15,6 @@
 
     <string name="no_answer">N/A</string>
     <string name="no_image">Image not available</string>
+
+    <string name="transition_main_search">main_search</string>
 </resources>

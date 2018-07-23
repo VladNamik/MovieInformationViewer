@@ -5,10 +5,72 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <fragment
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/only_movie_list_activity_list_fragment"
-        android:name="com.vladnamik.developer.movieinformationviewer.components.fragments.MovieListFragment_" />
+        android:orientation="vertical">
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/header_for_movie_listview_container"
+            android:padding="16dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/search_results_for"
+                    android:textColor="@color/colorPrimaryText"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/header_for_movie_listview_search_query"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:textStyle="italic"
+                    android:textColor="@color/colorAccentText"
+                    android:transitionName="@string/transition_main_search"
+                    tools:text="Suits" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/search_results_number"
+                    android:textColor="@color/colorPrimaryText"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/header_for_movie_listview_search_results_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:textStyle="italic"
+                    android:textColor="@color/colorAccentText"
+                    tools:text="120" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <fragment
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/only_movie_list_activity_list_fragment"
+            android:name="com.vladnamik.developer.movieinformationviewer.components.fragments.MovieListFragment_" />
+    </LinearLayout>
 
 </android.support.v4.widget.SwipeRefreshLayout>

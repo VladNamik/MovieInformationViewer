@@ -45,9 +45,6 @@ public class MovieListFragment extends ListFragment {
     private MovieListAdapter listAdapter;
     private List<Movie> movies = new ArrayList<>();
     private OnMovieSelected onMovieSelected;
-    private View headerView;
-    private TextView headerSearchQuery;
-    private TextView headerSearchResultsNumber;
     private SwipeRefreshLayout swipeLayout;
 
     @Override
@@ -57,8 +54,7 @@ public class MovieListFragment extends ListFragment {
         changeListViewStyle();
 
         swipeLayout = getActivity().findViewById(R.id.swipe_container);
-        if (swipeLayout != null)
-        {
+        if (swipeLayout != null) {
             swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
                 public void onRefresh() {
@@ -77,11 +73,9 @@ public class MovieListFragment extends ListFragment {
         getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                if (i != 0) { // avoiding header clicking
-                    Log.d(LOG_TAG, "start onListItemClick()");
-                    view.setSelected(true);
-                    onMovieSelected.onMovieSelected(movies.get(i - 1).getImdbID()); // i - 1 because of header
-                }
+                Log.d(LOG_TAG, "start onListItemClick()");
+                view.setSelected(true);
+                onMovieSelected.onMovieSelected(movies.get(i).getImdbID());
             }
         });
 
@@ -98,8 +92,8 @@ public class MovieListFragment extends ListFragment {
                         + "; visibleItemCount = " + visibleItemCount + "; allMoviesOnQueryNumber = "
                         + allMoviesOnQueryNumber + "; moviesNumber = " + movies.size());
                 // -1 because of header
-                if ((firstVisibleItem + visibleItemCount - 1) == movies.size()
-                        && (firstVisibleItem + visibleItemCount - 1) < allMoviesOnQueryNumber) {
+                if ((firstVisibleItem + visibleItemCount) == movies.size()
+                        && (firstVisibleItem + visibleItemCount) < allMoviesOnQueryNumber) {
                     tryToAddNewDataInList();
                 }
 
@@ -108,21 +102,12 @@ public class MovieListFragment extends ListFragment {
             }
         });
 
-        headerView = getActivity().getLayoutInflater().inflate(R.layout.header_for_movie_listview, null);
-        headerView.setClickable(false);
-        headerSearchQuery = headerView.findViewById(R.id.header_for_movie_listview_search_query);
-        headerSearchResultsNumber = headerView.findViewById(R.id.header_for_movie_listview_search_results_number);
-        headerSearchQuery.setText(query);
-        headerSearchResultsNumber.setText(String.format(Locale.getDefault(), "%d", allMoviesOnQueryNumber));
-        getListView().addHeaderView(headerView);
-
         tryToAddNewDataInList();
     }
 
-    protected void changeListViewStyle()
-    {
+    protected void changeListViewStyle() {
         // divider
-        int[] colors = {0, getResources().getColor(R.color.colorAccent), 0};
+        final int[] colors = {0, getResources().getColor(R.color.colorAccent), 0};
         getListView().setDivider(new GradientDrawable(GradientDrawable.Orientation.RIGHT_LEFT, colors));
         getListView().setDividerHeight(1);
     }
@@ -151,21 +136,22 @@ public class MovieListFragment extends ListFragment {
     }
 
     @UiThread
-    void afterNewDataAdded()
-    {
+    void afterNewDataAdded() {
         swipeLayout.setRefreshing(false);
     }
 
     @UiThread
     void addNewDataToAdapter(List<Movie> movies) {
-        Log.d(LOG_TAG, "start adding new data to adapter");
-        headerSearchResultsNumber.setText(String.format(Locale.getDefault(), "%d", allMoviesOnQueryNumber));
-        Map<String, String> bufMap;
-        for (Movie movie : movies) {
-            Log.d(LOG_TAG, movie.toString());
+        if (getActivity() != null) {
+            Log.d(LOG_TAG, "start adding new data to adapter");
+            ((GetQueryParams) getActivity()).setQueryParams(query, allMoviesOnQueryNumber);
+            Map<String, String> bufMap;
+            for (Movie movie : movies) {
+                Log.d(LOG_TAG, movie.toString());
+            }
+            this.movies.addAll(movies);
+            ((MovieListAdapter) getListAdapter()).notifyDataSetChanged();
         }
-        this.movies.addAll(movies);
-        ((MovieListAdapter) getListAdapter()).notifyDataSetChanged();
     }
 
     @UiThread
@@ -173,15 +159,16 @@ public class MovieListFragment extends ListFragment {
         query = newQuery;
         nextPageToUploadNumber = 1;
         allMoviesOnQueryNumber = 0;
-        headerSearchQuery.setText(query);
-        headerSearchResultsNumber.setText(String.format(Locale.getDefault(), "%d", allMoviesOnQueryNumber));
+        ((GetQueryParams) getActivity()).setQueryParams(query, allMoviesOnQueryNumber);
         movies.clear();
-        ((MovieListAdapter)getListAdapter()).notifyDataSetChanged();
+        ((MovieListAdapter) getListAdapter()).notifyDataSetChanged();
         tryToAddNewDataInList();
     }
 
     public interface GetQueryParams {
         String getQuery();
+
+        void setQueryParams(String newQuery, int moviesInQuery);
     }
 
     public interface OnMovieSelected {
