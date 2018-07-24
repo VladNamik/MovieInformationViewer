@@ -129,12 +129,22 @@ public class Movie extends BaseModel {
         Poster = poster;
     }
 
+    public boolean isCountryKnown()
+    {
+        return Country != null && !Country.equals("") && !Country.equals("N/A");
+    }
+
     public String getCountry() {
         return Country;
     }
 
     public void setCountry(String country) {
         Country = country;
+    }
+
+    public boolean isReleasedKnown()
+    {
+        return Released != null;
     }
 
     public Date getReleased() {
@@ -161,12 +171,22 @@ public class Movie extends BaseModel {
         Plot = plot;
     }
 
+    public boolean isImdbRatingKnown()
+    {
+        return imdbRating != null;
+    }
+
     public Float getImdbRating() {
         return imdbRating;
     }
 
     public void setImdbRating(Float imdbRating) {
         this.imdbRating = imdbRating;
+    }
+
+    public boolean isRatedKnown()
+    {
+        return Rated != null && !Rated.equals("") && !Rated.equals("N/A");
     }
 
     public String getRated() {

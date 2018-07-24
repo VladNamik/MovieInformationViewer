@@ -1,39 +1,28 @@
 package com.vladnamik.developer.movieinformationviewer.components.fragments;
 
 import android.app.ListFragment;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.SimpleAdapter;
-import android.widget.TextView;
 
 import com.vladnamik.developer.movieinformationviewer.R;
 import com.vladnamik.developer.movieinformationviewer.components.Application;
 import com.vladnamik.developer.movieinformationviewer.components.adapters.MovieListAdapter;
 import com.vladnamik.developer.movieinformationviewer.database.entities.Movie;
 import com.vladnamik.developer.movieinformationviewer.database.entities.SearchPage;
-import com.vladnamik.developer.movieinformationviewer.main.DataLoader;
-import com.vladnamik.developer.movieinformationviewer.main.DataLoaderMock;
-import com.vladnamik.developer.movieinformationviewer.main.DataLoaderServiceBased;
+import com.vladnamik.developer.movieinformationviewer.loaders.DataLoader;
 
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.UiThread;
-import org.androidannotations.annotations.ViewById;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 @EFragment

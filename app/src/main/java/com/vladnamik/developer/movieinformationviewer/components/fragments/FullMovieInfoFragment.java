@@ -5,15 +5,14 @@ import android.app.Fragment;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.vladnamik.developer.movieinformationviewer.R;
 import com.vladnamik.developer.movieinformationviewer.components.Application;
 import com.vladnamik.developer.movieinformationviewer.database.entities.Movie;
-import com.vladnamik.developer.movieinformationviewer.main.DataLoader;
-import com.vladnamik.developer.movieinformationviewer.main.DataLoaderMock;
-import com.vladnamik.developer.movieinformationviewer.main.DataLoaderServiceBased;
+import com.vladnamik.developer.movieinformationviewer.loaders.DataLoader;
 
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EFragment;
@@ -57,6 +56,24 @@ public class FullMovieInfoFragment extends Fragment {
     @ViewById(R.id.full_movie_info_fragment_release_date_textview)
     TextView releaseDateTextView;
 
+    @ViewById(R.id.full_movie_info_fragment_full_image_container)
+    View fullImageContainer;
+
+    @ViewById(R.id.full_movie_info_fragment_full_image)
+    ImageView fullImageView;
+
+    @ViewById(R.id.full_movie_info_fragment_country_container)
+    View countryContainer;
+
+    @ViewById(R.id.full_movie_info_fragment_release_date_container)
+    View releaseDateContainer;
+
+    @ViewById(R.id.full_movie_info_fragment_rated_container)
+    View ratedContainer;
+
+    @ViewById(R.id.full_movie_info_fragment_imdb_rating_container)
+    View imdbRatingContainer;
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -87,21 +104,67 @@ public class FullMovieInfoFragment extends Fragment {
 
         titleTextView.setText(String.format("%s (%s, %s)", movie.getTitle(), movie.getType(), movie.getYear()));
         filmDescriptionTextView.setText(movie.getPlot());
-        countryTextView.setText(movie.getCountry());
+
+        if (movie.isCountryKnown()) {
+            countryTextView.setText(movie.getCountry());
+        } else {
+            countryContainer.setVisibility(View.GONE);
+        }
+
         genresTextView.setText(movie.getGenre());
-        imdbRatingTextView.setText(String.format(Locale.getDefault(), "%.2f", movie.getImdbRating()));
-        ratedTextView.setText(movie.getRated());
-        if (movie.getReleased() != null) {
+
+        if (movie.isImdbRatingKnown()) {
+            imdbRatingTextView.setText(String.format(Locale.getDefault(), "%.2f", movie.getImdbRating()));
+        } else {
+            imdbRatingContainer.setVisibility(View.GONE);
+        }
+
+        if (movie.isRatedKnown()) {
+            ratedTextView.setText(movie.getRated());
+        } else {
+            ratedContainer.setVisibility(View.GONE);
+        }
+
+        if (movie.isReleasedKnown()) {
             releaseDateTextView.setText(movie.getReleased().toString());
         } else {
-            releaseDateTextView.setText(getString(R.string.no_answer));
+            releaseDateContainer.setVisibility(View.GONE);
         }
+
         Log.d(LOG_TAG, movie.getPoster());
         if (movie.getMoviePoster() != null && movie.getMoviePoster().getMoviePoster() != null) {
             byte[] moviePosterBlob = movie.getMoviePoster().getMoviePoster().getBlob();
             posterImageView.setImageBitmap(BitmapFactory.decodeByteArray(moviePosterBlob, 0, moviePosterBlob.length));
+            fullImageView.setImageBitmap(BitmapFactory.decodeByteArray(moviePosterBlob, 0, moviePosterBlob.length));
+
+            posterImageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    setFullScreenPoster(true);
+                }
+            });
+            fullImageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    setFullScreenPoster(false);
+                }
+            });
+            fullImageContainer.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    setFullScreenPoster(false);
+                }
+            });
         } else {
             posterNoImageTextView.setText(R.string.no_image);
+        }
+    }
+
+    private void setFullScreenPoster(boolean isFullScreen) {
+        if (isFullScreen) {
+            fullImageContainer.setVisibility(View.VISIBLE);
+        } else {
+            fullImageContainer.setVisibility(View.GONE);
         }
     }
 

@@ -1,4 +1,4 @@
-package com.vladnamik.developer.movieinformationviewer.main;
+package com.vladnamik.developer.movieinformationviewer.loaders;
 
 
 import com.google.gson.Gson;

@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.ShareActionProvider;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.vladnamik.developer.movieinformationviewer.R;
@@ -16,6 +18,7 @@ import com.vladnamik.developer.movieinformationviewer.database.entities.Movie;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
+import org.androidannotations.annotations.ViewById;
 
 @EActivity(R.layout.activity_only_full_movie_info)
 public class FullMovieInfoActivity extends AppCompatActivity implements FullMovieInfoFragment.GetMovieImdbId {
