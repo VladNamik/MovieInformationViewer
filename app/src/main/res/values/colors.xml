@@ -5,9 +5,9 @@
     <color name="colorAccent">#181622</color>
     <color name="colorAccentLight">#222222</color>
     <color name="colorTitle">#FFFFFF</color>
-    <color name="backgroundMain">#FFFFFF</color>
-    <color name="backgroundDark">#E2E2E2</color>
-    <color name="backgroundFullScreenDark">#DD141414</color>
+    <color name="colorBackground">#FFFFFF</color>
+    <color name="colorBackgroundDark">#E2E2E2</color>
+    <color name="colorBackgroundFullScreenDark">#DD141414</color>
     <color name="colorPrimaryText">#181622</color>
     <color name="colorSecondaryText">#333333</color>
     <color name="colorAccentText">#202020</color>
