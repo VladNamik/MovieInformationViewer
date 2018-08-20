@@ -16,7 +16,7 @@ public class APIHelper {
 
     public SearchPage getPage(final String search, final int pageNumber) throws IOException {
         SearchPage searchPage = api.search(search, pageNumber).execute().body();
-        if (searchPage.getTotalResults() == null) {
+        if (searchPage == null ||searchPage.getTotalResults() == null) {
             return null;
         }
 
